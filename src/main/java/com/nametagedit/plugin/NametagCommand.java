@@ -1,6 +1,7 @@
 package com.nametagedit.plugin;
 
 import com.nametagedit.plugin.api.data.GroupData;
+import com.nametagedit.plugin.api.data.Nametag;
 import com.nametagedit.plugin.api.events.NametagEvent;
 import com.nametagedit.plugin.converter.Converter;
 import com.nametagedit.plugin.converter.ConverterTask;
@@ -18,7 +19,9 @@ import org.bukkit.scoreboard.Team;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 
 @AllArgsConstructor
 public class NametagCommand implements CommandExecutor, TabExecutor {
@@ -87,6 +90,28 @@ public class NametagCommand implements CommandExecutor, TabExecutor {
             sendUsage(sender);
         } else {
             switch (args[0].toLowerCase()) {
+                case "test":
+                    if(args.length<4){
+                        sender.sendMessage("Usage: /nte test <target> <source> <prefix>");
+                        return false;
+                    }
+                    Player target = Bukkit.getPlayer(args[1]);
+                    if(target==null){
+                        sender.sendMessage("Target player not found");
+                        return false;
+                    }
+                    Player source = Bukkit.getPlayer(args[2]);
+                    if(source==null){
+                        sender.sendMessage("Source player not found");
+                        return false;
+                    }
+                    String prefix = args[3];
+                    NametagEdit.getInstance().getManager().getModifiedNametags()
+                            .putIfAbsent(source,new ConcurrentHashMap<>());
+                    NametagEdit.getInstance().getManager().getModifiedNametags().get(source)
+                            .put(target.getName(),new Nametag(prefix,""));
+                    handler.applyTagToPlayer(target,true);
+                    break;
                 case "reload":
                     cmdReload(sender);
                     break;

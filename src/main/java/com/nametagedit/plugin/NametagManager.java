@@ -1,8 +1,10 @@
 package com.nametagedit.plugin;
 
 import com.nametagedit.plugin.api.data.FakeTeam;
+import com.nametagedit.plugin.api.data.Nametag;
 import com.nametagedit.plugin.packets.PacketWrapper;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
@@ -19,6 +21,11 @@ public class NametagManager {
 
     private final Map<String, FakeTeam> TEAMS = new ConcurrentHashMap<>();
     private final Map<String, FakeTeam> CACHED_FAKE_TEAMS = new ConcurrentHashMap<>();
+
+    @Getter
+    private final Map<Player, Map<String, Nametag>> modifiedNametags = new ConcurrentHashMap<>();
+
+
     private final NametagEdit plugin;
 
     /**

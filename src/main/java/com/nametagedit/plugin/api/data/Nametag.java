@@ -6,8 +6,15 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@AllArgsConstructor
 public class Nametag {
     private String prefix;
     private String suffix;
+    @Getter
+    @Setter
+    private boolean visible = true;
+
+    public Nametag(String prefix, String suffix) {
+        this.prefix = prefix;
+        this.suffix = suffix;
+    }
 }

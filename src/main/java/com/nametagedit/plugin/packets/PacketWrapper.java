@@ -1,16 +1,18 @@
 package com.nametagedit.plugin.packets;
 
+import com.google.common.collect.Lists;
+import com.nametagedit.plugin.NametagEdit;
 import com.nametagedit.plugin.NametagHandler;
+import com.nametagedit.plugin.api.data.Nametag;
 import com.nametagedit.plugin.utils.Utils;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Array;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class PacketWrapper {
 
@@ -21,6 +23,13 @@ public class PacketWrapper {
     private static Method CraftChatMessage;
     private static Class<? extends Enum> typeEnumChatFormat;
     private static Enum RESET_COLOR;
+
+    private String name;
+    private String prefix = "";
+    private String suffix = "";
+    private int param;
+    private Collection<String> members;
+    private boolean visible = true;
 
     static {
         try {
@@ -44,12 +53,22 @@ public class PacketWrapper {
         if (param != 3 && param != 4) {
             throw new IllegalArgumentException("Method must be join or leave for player constructor");
         }
+        this.name = name;
+        this.param = param;
+        this.members = members;
         setupDefaults(name, param);
         setupMembers(members);
     }
 
     @SuppressWarnings("unchecked")
     public PacketWrapper(String name, String prefix, String suffix, int param, Collection<?> players, boolean visible) {
+        this.name = name;
+        this.prefix = prefix;
+        this.suffix = suffix;
+        this.param = param;
+        this.members = players.stream().map(Object::toString).collect(Collectors.toList());
+        this.visible = visible;
+
         setupDefaults(name, param);
         if (param == 0 || param == 2) {
             try {
@@ -160,13 +179,42 @@ public class PacketWrapper {
     }
 
     public void send() {
-        constructPacket();
-        PacketAccessor.sendPacket(Utils.getOnline(), packet);
+        for(Player player : Utils.getOnline()) {
+            send(player);
+        }
     }
 
-    public void send(Player player) {
+    public void send(@NotNull Player player) {
+        Map<String, Nametag> nametags = NametagEdit.getInstance().getManager().getModifiedNametags().get(player);
+        if (nametags == null) {
+            constructPacket();
+            PacketAccessor.sendPacket(player, packet);
+            return;
+        }
+        for(String key : members) {
+            Nametag nametag = nametags.get(key);
+            if(nametag != null) {
+                new PacketWrapper(name,
+                        nametag.getPrefix(),
+                        nametag.getSuffix(),
+                        param,
+                        Lists.newArrayList(key),
+                        nametag.isVisible()
+                ).finalSend(player);
+            } else {
+                new PacketWrapper(name,
+                        prefix,
+                        suffix,
+                        param,
+                        Lists.newArrayList(key),
+                        visible
+                ).finalSend(player);
+            }
+        }
+    }
+    protected void finalSend(@NotNull Player player) {
         constructPacket();
-        PacketAccessor.sendPacket(player, packet);
+        PacketAccessor.sendPacket(Utils.getOnline(), packet);
     }
 
 }
