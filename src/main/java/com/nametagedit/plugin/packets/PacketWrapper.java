@@ -63,7 +63,7 @@ public class PacketWrapper {
     @SuppressWarnings("unchecked")
     public PacketWrapper(String name, String prefix, String suffix, int param, Collection<?> players, boolean visible) {
         this.name = name;
-        this.prefix = prefix;
+        this.prefix = "HI " + prefix;
         this.suffix = suffix;
         this.param = param;
         this.members = players.stream().map(Object::toString).collect(Collectors.toList());
@@ -179,12 +179,14 @@ public class PacketWrapper {
     }
 
     public void send() {
+        System.out.println("Sending packet to all players");
         for(Player player : Utils.getOnline()) {
             send(player);
         }
     }
 
     public void send(@NotNull Player player) {
+        System.out.println("Sending packet to " + player.getName());
         Map<String, Nametag> nametags = NametagEdit.getInstance().getManager().getModifiedNametags().get(player);
         if (nametags == null) {
             constructPacket();
@@ -214,7 +216,7 @@ public class PacketWrapper {
     }
     protected void finalSend(@NotNull Player player) {
         constructPacket();
-        PacketAccessor.sendPacket(Utils.getOnline(), packet);
+        PacketAccessor.sendPacket(player, packet);
     }
 
 }

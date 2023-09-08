@@ -58,6 +58,8 @@ public class NametagEdit extends JavaPlugin {
             pluginManager.registerEvents(new HookGroupManager(handler), this);
         } else if (checkShouldRegister("LuckPerms")) {
             pluginManager.registerEvents(new HookLuckPerms(handler), this);
+        }else if (checkShouldRegister("Gangs")) {
+            pluginManager.registerEvents(new AtumGangsHook(handler), this);
         }
 
         if (pluginManager.getPlugin("LibsDisguises") != null) {

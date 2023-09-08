@@ -1,8 +1,10 @@
 package com.nametagedit.plugin;
 
+import com.google.common.collect.Lists;
 import com.nametagedit.plugin.api.data.FakeTeam;
 import com.nametagedit.plugin.api.data.Nametag;
 import com.nametagedit.plugin.packets.PacketWrapper;
+import com.nametagedit.plugin.utils.Utils;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.bukkit.Bukkit;
@@ -128,6 +130,7 @@ public class NametagManager {
     public void setNametag(String player, String prefix, String suffix, boolean visible) {
         setNametag(player, prefix, suffix, -1, false, visible);
     }
+
 
     void setNametag(String player, String prefix, String suffix, int sortPriority) {
         setNametag(player, prefix, suffix, sortPriority, false, true);
