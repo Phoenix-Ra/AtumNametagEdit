@@ -1,6 +1,6 @@
 package com.nametagedit.plugin.converter;
 
-import com.nametagedit.plugin.NametagEdit;
+import com.nametagedit.plugin.AtumNametagEdit;
 import com.nametagedit.plugin.NametagMessages;
 import com.nametagedit.plugin.storage.database.DatabaseConfig;
 import com.nametagedit.plugin.utils.Utils;
@@ -22,7 +22,7 @@ public class ConverterTask extends BukkitRunnable {
 
     private final boolean databaseToFile;
     private final CommandSender sender;
-    private final NametagEdit plugin;
+    private final AtumNametagEdit plugin;
 
     @Override
     public void run() {

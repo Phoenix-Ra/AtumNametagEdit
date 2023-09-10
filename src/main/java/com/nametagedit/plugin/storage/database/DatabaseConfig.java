@@ -1,6 +1,6 @@
 package com.nametagedit.plugin.storage.database;
 
-import com.nametagedit.plugin.NametagEdit;
+import com.nametagedit.plugin.AtumNametagEdit;
 import com.nametagedit.plugin.NametagHandler;
 import com.nametagedit.plugin.api.data.GroupData;
 import com.nametagedit.plugin.api.data.PlayerData;
@@ -19,7 +19,7 @@ import java.util.UUID;
 
 public class DatabaseConfig implements AbstractConfig {
 
-    private NametagEdit plugin;
+    private AtumNametagEdit plugin;
     private NametagHandler handler;
     private HikariDataSource hikari;
 
@@ -29,7 +29,7 @@ public class DatabaseConfig implements AbstractConfig {
     public static String TABLE_PLAYERS;
     public static String TABLE_CONFIG;
 
-    public DatabaseConfig(NametagEdit plugin, NametagHandler handler, Configuration config) {
+    public DatabaseConfig(AtumNametagEdit plugin, NametagHandler handler, Configuration config) {
         this.plugin = plugin;
         this.handler = handler;
         TABLE_GROUPS = "`" + config.getString("MySQL.GroupsTable", "nte_groups") + "`";

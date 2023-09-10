@@ -1,10 +1,12 @@
 package com.nametagedit.plugin.packets;
 
 import com.google.common.collect.Lists;
-import com.nametagedit.plugin.NametagEdit;
+import com.nametagedit.plugin.AtumNametagEdit;
 import com.nametagedit.plugin.NametagHandler;
 import com.nametagedit.plugin.api.data.Nametag;
+import com.nametagedit.plugin.hooks.AtumGangsHook;
 import com.nametagedit.plugin.utils.Utils;
+import me.phoenixra.atum.core.tuples.PairRecord;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -63,7 +65,7 @@ public class PacketWrapper {
     @SuppressWarnings("unchecked")
     public PacketWrapper(String name, String prefix, String suffix, int param, Collection<?> players, boolean visible) {
         this.name = name;
-        this.prefix = "HI " + prefix;
+        this.prefix = prefix;
         this.suffix = suffix;
         this.param = param;
         this.members = players.stream().map(Object::toString).collect(Collectors.toList());
@@ -187,21 +189,21 @@ public class PacketWrapper {
 
     public void send(@NotNull Player player) {
         System.out.println("Sending packet to " + player.getName());
-        Map<String, Nametag> nametags = NametagEdit.getInstance().getManager().getModifiedNametags().get(player);
-        if (nametags == null) {
+        HashMap<String,String> modified =  AtumGangsHook.getSavedColors().get(player);
+        if ( param==4 || modified == null) {
             constructPacket();
             PacketAccessor.sendPacket(player, packet);
             return;
         }
         for(String key : members) {
-            Nametag nametag = nametags.get(key);
-            if(nametag != null) {
+            String color = modified.get(key);
+            if(color != null) {
                 new PacketWrapper(name,
-                        nametag.getPrefix(),
-                        nametag.getSuffix(),
+                        prefix+color,
+                        suffix,
                         param,
                         Lists.newArrayList(key),
-                        nametag.isVisible()
+                        visible
                 ).finalSend(player);
             } else {
                 new PacketWrapper(name,

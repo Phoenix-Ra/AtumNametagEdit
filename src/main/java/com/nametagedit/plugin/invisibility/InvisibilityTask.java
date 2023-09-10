@@ -1,6 +1,6 @@
 package com.nametagedit.plugin.invisibility;
 
-import com.nametagedit.plugin.NametagEdit;
+import com.nametagedit.plugin.AtumNametagEdit;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffectType;
@@ -20,9 +20,9 @@ public class InvisibilityTask extends BukkitRunnable {
 
         players.forEach(player ->{
             if(player.hasPotionEffect(PotionEffectType.INVISIBILITY)){
-                NametagEdit.getApi().hideNametag(player);
+                AtumNametagEdit.getApi().hideNametag(player);
             }else{
-                NametagEdit.getApi().showNametag(player);
+                AtumNametagEdit.getApi().showNametag(player);
             }
         });
     }

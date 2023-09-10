@@ -1,6 +1,6 @@
 package com.nametagedit.plugin.storage.flatfile;
 
-import com.nametagedit.plugin.NametagEdit;
+import com.nametagedit.plugin.AtumNametagEdit;
 import com.nametagedit.plugin.NametagHandler;
 import com.nametagedit.plugin.api.data.GroupData;
 import com.nametagedit.plugin.api.data.PlayerData;
@@ -27,10 +27,10 @@ public class FlatFileConfig implements AbstractConfig {
     private YamlConfiguration groups;
     private YamlConfiguration players;
 
-    private final NametagEdit plugin;
+    private final AtumNametagEdit plugin;
     private final NametagHandler handler;
 
-    public FlatFileConfig(NametagEdit plugin, NametagHandler handler) {
+    public FlatFileConfig(AtumNametagEdit plugin, NametagHandler handler) {
         this.plugin = plugin;
         this.handler = handler;
     }

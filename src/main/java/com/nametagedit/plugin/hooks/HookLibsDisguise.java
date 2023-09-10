@@ -1,6 +1,6 @@
 package com.nametagedit.plugin.hooks;
 
-import com.nametagedit.plugin.NametagEdit;
+import com.nametagedit.plugin.AtumNametagEdit;
 import lombok.AllArgsConstructor;
 import me.libraryaddict.disguise.events.DisguiseEvent;
 import org.bukkit.entity.Player;
@@ -11,7 +11,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 @AllArgsConstructor
 public class HookLibsDisguise implements Listener {
 
-    private final NametagEdit plugin;
+    private final AtumNametagEdit plugin;
 
     @EventHandler
     public void onDisguiseEvent(final DisguiseEvent event) {

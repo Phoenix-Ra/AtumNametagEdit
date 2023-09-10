@@ -7,7 +7,7 @@
     <artifactId>nametagedit</artifactId>
     <version>4.5.20</version>
     <packaging>jar</packaging>
-    <name>NametagEdit</name>
+    <name>AtumNametagEdit</name>
     <url>https://maven.apache.org</url>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -107,7 +107,14 @@
             <scope>system</scope>
             <systemPath>${basedir}/lib/Gangs-1.01.jar</systemPath>
         </dependency>
-
+        <!-- Vault -->
+        <dependency>
+            <groupId>net.milkbowl.vault</groupId>
+            <artifactId>Vault</artifactId>
+            <version>1.01</version>
+            <scope>system</scope>
+            <systemPath>${basedir}/lib/Vault.jar</systemPath>
+        </dependency>
         <!--AtumCore-2.13.1-all.jar -->
         <dependency>
             <groupId>me.phoenixra.atum</groupId>
@@ -174,7 +181,7 @@
     <!-- Builds NametagEdit -->
     <build>
         <defaultGoal>clean package</defaultGoal>
-        <finalName>NametagEdit</finalName>
+        <finalName>AtumNametagEdit</finalName>
         <sourceDirectory>${basedir}/src/main/java</sourceDirectory>
         <resources>
             <resource>

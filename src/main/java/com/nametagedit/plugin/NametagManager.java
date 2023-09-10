@@ -1,10 +1,9 @@
 package com.nametagedit.plugin;
 
-import com.google.common.collect.Lists;
 import com.nametagedit.plugin.api.data.FakeTeam;
 import com.nametagedit.plugin.api.data.Nametag;
+import com.nametagedit.plugin.hooks.AtumGangsHook;
 import com.nametagedit.plugin.packets.PacketWrapper;
-import com.nametagedit.plugin.utils.Utils;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.bukkit.Bukkit;
@@ -24,11 +23,9 @@ public class NametagManager {
     private final Map<String, FakeTeam> TEAMS = new ConcurrentHashMap<>();
     private final Map<String, FakeTeam> CACHED_FAKE_TEAMS = new ConcurrentHashMap<>();
 
-    @Getter
-    private final Map<Player, Map<String, Nametag>> modifiedNametags = new ConcurrentHashMap<>();
 
 
-    private final NametagEdit plugin;
+    private final AtumNametagEdit plugin;
 
     /**
      * Gets the current team given a prefix and suffix
@@ -153,6 +150,7 @@ public class NametagManager {
         }
         CACHED_FAKE_TEAMS.clear();
         TEAMS.clear();
+        AtumGangsHook.clearPacketsForAll();
     }
 
     // ==============================================================

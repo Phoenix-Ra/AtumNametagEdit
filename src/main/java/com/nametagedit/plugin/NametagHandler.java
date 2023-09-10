@@ -52,6 +52,7 @@ public class NametagHandler implements Listener {
 
     private BukkitTask clearEmptyTeamTask;
     private BukkitTask refreshNametagTask;
+    @Getter
     private AbstractConfig abstractConfig;
 
     private Configuration config;
@@ -64,10 +65,10 @@ public class NametagHandler implements Listener {
     @Setter(AccessLevel.NONE)
     private Map<UUID, PlayerData> playerData = new HashMap<>();
 
-    private NametagEdit plugin;
+    private AtumNametagEdit plugin;
     private NametagManager nametagManager;
 
-    public NametagHandler(NametagEdit plugin, NametagManager nametagManager) {
+    public NametagHandler(AtumNametagEdit plugin, NametagManager nametagManager) {
         this.config = getCustomConfig(plugin);
         this.plugin = plugin;
         this.nametagManager = nametagManager;
@@ -328,7 +329,7 @@ public class NametagHandler implements Listener {
         DISABLE_PUSH_ALL_TAGS = config.getBoolean("DisablePush");
 
         if (config.getBoolean("MetricsEnabled")) {
-            Metrics m = new Metrics(NametagEdit.getPlugin(NametagEdit.class));
+            Metrics m = new Metrics(AtumNametagEdit.getPlugin(AtumNametagEdit.class));
             m.addCustomChart(new Metrics.SimplePie("using_spigot", () -> PlaceholderAPIPlugin.getServerVersion().isSpigot() ? "yes" : "no"));
         }
 
@@ -412,16 +413,12 @@ public class NametagHandler implements Listener {
 
     public void setPlayerNameTagForSources(Player target, Nametag nametag, String teamId, Player ... sources){
 
-        FakeTeam fakeTeam = NametagEdit.getApi().getFakeTeam(target);
+      /*  FakeTeam fakeTeam = AtumNametagEdit.getApi().getFakeTeam(target);
         String teamName = fakeTeam == null ? teamId : fakeTeam.getName();
         String prefix = nametag.getPrefix() == null ? fakeTeam == null ? "" : fakeTeam.getPrefix() : nametag.getPrefix();
         String suffix = nametag.getSuffix() == null ? fakeTeam == null ? "" : fakeTeam.getSuffix() : nametag.getSuffix();
 
         for(Player source : sources) {
-            NametagEdit.getInstance().getManager().getModifiedNametags()
-                    .putIfAbsent(source, new ConcurrentHashMap<>());
-            NametagEdit.getInstance().getManager().getModifiedNametags().get(source)
-                    .put(target.getName(), new Nametag(prefix, suffix));
 
             new PacketWrapper(
                     teamName,
@@ -431,51 +428,51 @@ public class NametagHandler implements Listener {
                     Lists.newArrayList(target.getName()),
                     true
             ).send(source);
-        }
+        }*/
     }
     public void setPlayerNameColorForSources(Player target, String color, String teamId, Player ... sources){
 
-        FakeTeam fakeTeam = NametagEdit.getApi().getFakeTeam(target);
+        FakeTeam fakeTeam = AtumNametagEdit.getApi().getFakeTeam(target);
         String teamName = fakeTeam == null ? teamId : fakeTeam.getName();
         String prefix = fakeTeam == null ? Utils.format(color) : fakeTeam.getPrefix()+Utils.format(color);
         String suffix = fakeTeam == null ? "" : fakeTeam.getSuffix();
+        if(color.isEmpty()&&fakeTeam == null) {
+            for (Player source : sources) {
+                new PacketWrapper(teamName,"","", 1, new ArrayList<>(),false).send(source);
+            }
+        } else {
+            for (Player source : sources) {
 
-        for(Player source : sources) {
-            NametagEdit.getInstance().getManager().getModifiedNametags()
-                    .putIfAbsent(source, new ConcurrentHashMap<>());
-            NametagEdit.getInstance().getManager().getModifiedNametags().get(source)
-                    .put(target.getName(), new Nametag(prefix, suffix));
-
-            new PacketWrapper(
-                    teamName,
-                    prefix,
-                    suffix,
-                    0,
-                    Lists.newArrayList(target.getName()),
-                    true
-            ).send(source);
+                new PacketWrapper(
+                        teamName,
+                        prefix,
+                        suffix,
+                        0,
+                        Lists.newArrayList(target.getName()),
+                        true
+                ).send(source);
+            }
         }
     }
     public void setPlayerNameColorForTargets(Player source, String color, String teamId, Player ... targets){
         for(Player target : targets) {
-            FakeTeam fakeTeam = NametagEdit.getApi().getFakeTeam(target);
+
+            FakeTeam fakeTeam = AtumNametagEdit.getApi().getFakeTeam(target);
             String teamName = fakeTeam == null ? teamId : fakeTeam.getName();
             String prefix = fakeTeam == null ? Utils.format(color) : fakeTeam.getPrefix()+Utils.format(color);
             String suffix = fakeTeam == null ? "" : fakeTeam.getSuffix();
-
-            NametagEdit.getInstance().getManager().getModifiedNametags()
-                    .putIfAbsent(source, new ConcurrentHashMap<>());
-            NametagEdit.getInstance().getManager().getModifiedNametags().get(source)
-                    .put(target.getName(), new Nametag(prefix, suffix));
-
-            new PacketWrapper(
-                    teamName,
-                    prefix,
-                    suffix,
-                    0,
-                    Lists.newArrayList(target.getName()),
-                    true
-            ).send(source);
+            if(color.isEmpty()&&fakeTeam == null) {
+                new PacketWrapper(teamName,"","", 1, new ArrayList<>(),false).send(source);
+            }else{
+                new PacketWrapper(
+                        teamName,
+                        prefix,
+                        suffix,
+                        0,
+                        Lists.newArrayList(target.getName()),
+                        true
+                ).send(source);
+            }
         }
     }
     void clear(final CommandSender sender, final String player) {

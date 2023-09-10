@@ -1,6 +1,6 @@
 package com.nametagedit.plugin.storage.database.tasks;
 
-import com.nametagedit.plugin.NametagEdit;
+import com.nametagedit.plugin.AtumNametagEdit;
 import com.nametagedit.plugin.NametagHandler;
 import com.nametagedit.plugin.storage.database.DatabaseConfig;
 import com.zaxxer.hikari.HikariDataSource;
@@ -17,7 +17,7 @@ public class DatabaseUpdater extends BukkitRunnable {
 
     private final NametagHandler handler;
     private final HikariDataSource hikari;
-    private final NametagEdit plugin;
+    private final AtumNametagEdit plugin;
 
     private static final int CURRENT_DATABASE_VERSION = 5;
 
