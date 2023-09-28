@@ -23,15 +23,8 @@ public final class NametagAPI implements INametagApi {
     private final NametagManager manager;
 
     @Override
-    public FakeTeam getFakeTeam(Player player) {
-        return manager.getFakeTeam(player.getName());
-    }
-
-    @Override
     public Nametag getNametag(Player player) {
-        FakeTeam team = manager.getFakeTeam(player.getName());
-        boolean nullTeam = team == null;
-        return new Nametag(nullTeam ? "" : team.getPrefix(), nullTeam ? "" : team.getSuffix());
+        return manager.getGlobalNametag(player.getName());
     }
 
     @Override
@@ -55,26 +48,26 @@ public final class NametagAPI implements INametagApi {
 
     @Override
     public void setPrefix(Player player, String prefix) {
-        FakeTeam fakeTeam = manager.getFakeTeam(player.getName());
-        setNametagAlt(player, prefix, fakeTeam == null ? null : fakeTeam.getSuffix());
+        Nametag nametag = manager.getGlobalNametag(player.getName());
+        setNametagAlt(player, prefix, nametag.getSuffix());
     }
 
     @Override
     public void setSuffix(Player player, String suffix) {
-        FakeTeam fakeTeam = manager.getFakeTeam(player.getName());
-        setNametagAlt(player, fakeTeam == null ? null : fakeTeam.getPrefix(), suffix);
+        Nametag nametag = manager.getGlobalNametag(player.getName());
+        setNametagAlt(player, nametag.getPrefix(), suffix);
     }
 
     @Override
     public void setPrefix(String player, String prefix) {
-        FakeTeam fakeTeam = manager.getFakeTeam(player);
-        manager.setNametag(player, prefix, fakeTeam == null ? null : fakeTeam.getSuffix());
+        Nametag nametag = manager.getGlobalNametag(player);
+        manager.setNametag(player, prefix, nametag.getSuffix());
     }
 
     @Override
     public void setSuffix(String player, String suffix) {
-        FakeTeam fakeTeam = manager.getFakeTeam(player);
-        manager.setNametag(player, fakeTeam == null ? null : fakeTeam.getPrefix(), suffix);
+        Nametag nametag = manager.getGlobalNametag(player);
+        manager.setNametag(player, nametag.getPrefix(), suffix);
     }
 
     @Override
@@ -89,26 +82,26 @@ public final class NametagAPI implements INametagApi {
 
     @Override
     public void hideNametag(Player player) {
-        FakeTeam fakeTeam = manager.getFakeTeam(player.getName());
-        manager.setNametag(player.getName(), fakeTeam == null ? null : fakeTeam.getPrefix(), fakeTeam == null ? null : fakeTeam.getSuffix(), false);
+        Nametag nametag = manager.getGlobalNametag(player.getName());
+        manager.setNametag(player.getName(), nametag.getPrefix(), nametag.getSuffix(), false);
     }
 
     @Override
     public void hideNametag(String player) {
-        FakeTeam fakeTeam = manager.getFakeTeam(player);
-        manager.setNametag(player, fakeTeam == null ? null : fakeTeam.getPrefix(), fakeTeam == null ? null : fakeTeam.getSuffix(), false);
+        Nametag nametag = manager.getGlobalNametag(player);
+        manager.setNametag(player, nametag.getPrefix(), nametag.getSuffix(), false);
     }
 
     @Override
     public void showNametag(Player player) {
-        FakeTeam fakeTeam = manager.getFakeTeam(player.getName());
-        manager.setNametag(player.getName(), fakeTeam == null ? null : fakeTeam.getPrefix(), fakeTeam == null ? null : fakeTeam.getSuffix(), true);
+        Nametag nametag = manager.getGlobalNametag(player.getName());
+        manager.setNametag(player.getName(), nametag.getPrefix(), nametag.getSuffix(), true);
     }
 
     @Override
     public void showNametag(String player) {
-        FakeTeam fakeTeam = manager.getFakeTeam(player);
-        manager.setNametag(player, fakeTeam == null ? null : fakeTeam.getPrefix(), fakeTeam == null ? null : fakeTeam.getSuffix(), true);
+        Nametag nametag = manager.getGlobalNametag(player);
+        manager.setNametag(player, nametag.getPrefix(), nametag.getSuffix(), false);
     }
 
     @Override
@@ -150,9 +143,7 @@ public final class NametagAPI implements INametagApi {
      * Private helper function to reduce redundancy
      */
     private boolean shouldFireEvent(Player player, NametagEvent.ChangeType type) {
-        NametagEvent event = new NametagEvent(player.getName(), "", getNametag(player), type);
-        Bukkit.getPluginManager().callEvent(event);
-        return !event.isCancelled();
+        return true;
     }
 
     /**
@@ -163,10 +154,6 @@ public final class NametagAPI implements INametagApi {
                 handler.formatWithPlaceholders(player, prefix, true),
                 handler.formatWithPlaceholders(player, suffix, true)
         );
-
-        NametagEvent event = new NametagEvent(player.getName(), prefix, nametag, NametagEvent.ChangeType.UNKNOWN);
-        Bukkit.getPluginManager().callEvent(event);
-        if (event.isCancelled()) return;
         manager.setNametag(player.getName(), nametag.getPrefix(), nametag.getSuffix());
     }
 

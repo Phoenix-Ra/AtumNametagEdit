@@ -180,43 +180,13 @@ public class PacketWrapper {
         }
     }
 
-    public void send() {
-        System.out.println("Sending packet to all players");
-        for(Player player : Utils.getOnline()) {
+    public void send(List<Player> players) {
+        for(Player player : players) {
             send(player);
         }
     }
 
     public void send(@NotNull Player player) {
-        System.out.println("Sending packet to " + player.getName());
-        HashMap<String,String> modified =  AtumGangsHook.getSavedColors().get(player);
-        if ( param==4 || modified == null) {
-            constructPacket();
-            PacketAccessor.sendPacket(player, packet);
-            return;
-        }
-        for(String key : members) {
-            String color = modified.get(key);
-            if(color != null) {
-                new PacketWrapper(name,
-                        prefix+color,
-                        suffix,
-                        param,
-                        Lists.newArrayList(key),
-                        visible
-                ).finalSend(player);
-            } else {
-                new PacketWrapper(name,
-                        prefix,
-                        suffix,
-                        param,
-                        Lists.newArrayList(key),
-                        visible
-                ).finalSend(player);
-            }
-        }
-    }
-    protected void finalSend(@NotNull Player player) {
         constructPacket();
         PacketAccessor.sendPacket(player, packet);
     }

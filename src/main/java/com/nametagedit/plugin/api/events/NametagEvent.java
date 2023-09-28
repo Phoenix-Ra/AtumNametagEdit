@@ -3,6 +3,7 @@ package com.nametagedit.plugin.api.events;
 import com.nametagedit.plugin.api.data.Nametag;
 import lombok.Getter;
 import lombok.Setter;
+import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
@@ -17,14 +18,14 @@ public class NametagEvent extends Event implements Cancellable {
 
     private boolean cancelled;
 
-    @Getter
-    @Setter
-    @Deprecated
-    private String value;
 
     @Getter
     @Setter
     private Nametag nametag;
+
+    @Getter
+    @Setter
+    private Player receiver;
 
     @Getter
     @Setter
@@ -42,29 +43,29 @@ public class NametagEvent extends Event implements Cancellable {
     @Setter
     private StorageType storageType;
 
-    public NametagEvent(String player, String value) {
-        this(player, value, ChangeType.UNKNOWN);
+    public NametagEvent(String player, Player receiver) {
+        this(player, receiver, ChangeType.UNKNOWN);
     }
 
-    public NametagEvent(String player, String value, Nametag nametag, ChangeType type) {
-        this(player, value, type);
+    public NametagEvent(String player, Player receiver, Nametag nametag, ChangeType type) {
+        this(player, receiver, type);
         this.nametag = nametag;
     }
 
-    public NametagEvent(String player, String value, ChangeType changeType) {
-        this(player, value, changeType, StorageType.MEMORY, ChangeReason.UNKNOWN);
+    public NametagEvent(String player, Player receiver, ChangeType changeType) {
+        this(player, receiver, changeType, StorageType.MEMORY, ChangeReason.UNKNOWN);
     }
 
-    public NametagEvent(String player, String value, ChangeType changeType, ChangeReason changeReason) {
-        this(player, value, changeType, StorageType.MEMORY, changeReason);
+    public NametagEvent(String player, Player receiver, ChangeType changeType, ChangeReason changeReason) {
+        this(player, receiver, changeType, StorageType.MEMORY, changeReason);
     }
 
-    public NametagEvent(String player, String value, ChangeType changeType, StorageType storageType, ChangeReason changeReason) {
+    public NametagEvent(String player, Player receiver, ChangeType changeType, StorageType storageType, ChangeReason changeReason) {
         this.player = player;
-        this.value = value;
         this.changeType = changeType;
         this.storageType = storageType;
         this.changeReason = changeReason;
+        this.receiver = receiver;
     }
 
     public static HandlerList getHandlerList() {

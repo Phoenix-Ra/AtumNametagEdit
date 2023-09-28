@@ -1,14 +1,9 @@
 package com.nametagedit.plugin;
 
-import com.google.common.collect.Lists;
-import com.nametagedit.plugin.api.NametagAPI;
-import com.nametagedit.plugin.api.data.FakeTeam;
 import com.nametagedit.plugin.api.data.GroupData;
-import com.nametagedit.plugin.api.data.Nametag;
 import com.nametagedit.plugin.api.events.NametagEvent;
 import com.nametagedit.plugin.converter.Converter;
 import com.nametagedit.plugin.converter.ConverterTask;
-import com.nametagedit.plugin.packets.PacketWrapper;
 import com.nametagedit.plugin.utils.Utils;
 import lombok.AllArgsConstructor;
 import org.bukkit.Bukkit;
@@ -23,9 +18,7 @@ import org.bukkit.scoreboard.Team;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.concurrent.ConcurrentHashMap;
 
 @AllArgsConstructor
 public class NametagCommand implements CommandExecutor, TabExecutor {

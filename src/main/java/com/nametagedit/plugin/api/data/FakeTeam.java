@@ -4,6 +4,8 @@ import com.nametagedit.plugin.packets.VersionChecker;
 import com.nametagedit.plugin.utils.Utils;
 import lombok.Data;
 import lombok.Getter;
+import lombok.Setter;
+import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +31,9 @@ public class FakeTeam {
     private String prefix;
     private String suffix;
     private boolean visible = true;
+
+    @Getter @Setter
+    private String color;
 
     public FakeTeam(String prefix, String suffix, int sortPriority, boolean playerTag) {
         String generatedName = UNIQUE_ID + "_" + getNameFromInput(sortPriority) + ++ID + (playerTag ? "+P" : "");

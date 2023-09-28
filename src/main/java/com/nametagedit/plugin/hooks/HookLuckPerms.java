@@ -33,7 +33,6 @@ public class HookLuckPerms implements Listener {
                 @Override
                 public void run() {
                     handler.getAbstractConfig().load(player, true);
-                    AtumGangsHook.sendPacketsForAll();
                 }
             }.runTaskLaterAsynchronously(handler.getPlugin(), 3);
         }
@@ -48,7 +47,6 @@ public class HookLuckPerms implements Listener {
                     @Override
                     public void run() {
                         handler.getAbstractConfig().load(player, true);
-                        AtumGangsHook.sendPacketsForAll();
                     }
                 }.runTaskLaterAsynchronously(handler.getPlugin(), 3);
             }

@@ -6,15 +6,10 @@ import com.nametagedit.plugin.hooks.*;
 import com.nametagedit.plugin.invisibility.InvisibilityTask;
 import com.nametagedit.plugin.packets.PacketWrapper;
 import com.nametagedit.plugin.packets.VersionChecker;
+import com.nametagedit.plugin.utils.Utils;
 import lombok.Getter;
-import net.luckperms.api.LuckPerms;
-import net.luckperms.api.LuckPermsProvider;
-import net.luckperms.api.event.user.UserDataRecalculateEvent;
-import net.milkbowl.vault.chat.Chat;
 import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
-import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.ArrayList;
@@ -111,7 +106,7 @@ public class AtumNametagEdit extends JavaPlugin {
 
     private void testCompat() {
         PacketWrapper wrapper = new PacketWrapper("TEST", "&f", "", 0, new ArrayList<>(), true);
-        wrapper.send();
+        wrapper.send(Utils.getOnline());
         if (wrapper.error == null) return;
         Bukkit.getPluginManager().disablePlugin(this);
         getLogger().severe("\n------------------------------------------------------\n" +
